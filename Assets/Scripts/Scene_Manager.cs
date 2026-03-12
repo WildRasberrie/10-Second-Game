@@ -17,6 +17,7 @@ public class Scene_Manager : MonoBehaviour
     {
         DontDestroyOnLoad(this.gameObject);
         action = new InputSystem_Actions();
+        AudioSource = FindFirstObjectByType<AudioSource>();
     }
 
     void OnEnable() { 
