@@ -2,6 +2,7 @@ using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Player_Controller : MonoBehaviour
@@ -11,7 +12,7 @@ public class Player_Controller : MonoBehaviour
     Vector3 targetPOS;
     bool targetSet, targetReached;
     int imgCount;
-    public static bool gameWon;
+    public static bool gameWon =false;
     [SerializeField] SpriteRenderer sprite;
     [SerializeField] Sprite[] UI_Images;
     [SerializeField] AudioSource AudioSource;
@@ -40,6 +41,17 @@ public class Player_Controller : MonoBehaviour
         //if all flowers are collected, end the game
         if (imgCount == UI_Images.Length-1){
             gameWon = true;
+        }
+
+        //if timer ends, change to end scene
+        if (Timer.timeOut)
+        {
+            SceneManager.LoadScene("End Scene");
+        }
+
+        if (gameWon)
+        {
+            SceneManager.LoadScene("Win Scene");
         }
 
     }

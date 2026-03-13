@@ -1,16 +1,23 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Restart : MonoBehaviour
 {
-    Scene_Manager Scene_Manager;
-        void Start()
-        {
-            Scene_Manager = FindFirstObjectByType<Scene_Manager>();
-        }
-  public void RestartGame()
+    [SerializeField] AudioSource AudioSource;
+    Button button;
+    void Start()
     {
-        Scene_Manager.StartGame();
+        button = FindFirstObjectByType<Button>();
+        button.onClick.AddListener(RestartGame);
+        //if audio source is null, find it
+        if (AudioSource == null) AudioSource = FindFirstObjectByType<AudioSource>();
+
+    }
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("Start Scene");
     }
 }

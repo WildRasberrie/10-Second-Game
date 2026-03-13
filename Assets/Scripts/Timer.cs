@@ -6,7 +6,7 @@ public class Timer : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI timerText;
     float time = 10f;
-    public static bool timeOut;
+    public static bool timeOut =false;
 
     void Update()
     {

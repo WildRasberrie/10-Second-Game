@@ -6,17 +6,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using System.Threading;
+using Unity.VisualScripting;
 
 public class Scene_Manager : MonoBehaviour
 {
     InputSystem_Actions action;
     [SerializeField] AudioSource AudioSource;
     [SerializeField] AudioClip AudioClip;
+    [SerializeField] Button button;
+    GameObject instance;
     //do not destroy this object when loading a new scene
     void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
         action = new InputSystem_Actions();
+        //singleton pattern to ensure only one instance
+        if (instance != null )
+        {
+            Destroy(this.gameObject);
+        }
+        if (instance == null)
+        {
+            instance = this.gameObject;
+            DontDestroyOnLoad(this.gameObject);
+
+        }
+       
         AudioSource = FindFirstObjectByType<AudioSource>();
     }
 
@@ -35,27 +49,21 @@ public class Scene_Manager : MonoBehaviour
         if (AudioSource != null) PlayAudio(AudioClip);
         SceneManager.LoadScene("Game Scene");
     }
+
     void PlayAudio(AudioClip audio)
     {
         AudioSource.PlayOneShot(audio);
     }
     //if esc is pressed change scene to start menu
-    private void Update()
+    void Update()
     {
-        //if timer ends, change to end scene
-        if (Timer.timeOut) {
-            SceneManager.LoadScene("End Scene");
-        }
-
-        if (Player_Controller.gameWon) {
-            SceneManager.LoadScene("Win Scene");
-        }
-
         //if esc is pressed, change to start menu
         if (action.Player.Escape.IsPressed())
         {
             SceneManager.LoadScene("Start Scene");
+            Player_Controller.gameWon = false;
+            Timer.timeOut = false;
         }
     }
-
+  
 }
